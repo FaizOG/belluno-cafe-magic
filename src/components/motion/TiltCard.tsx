@@ -1,0 +1,40 @@
+import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { useRef, type ReactNode } from "react";
+
+export function TiltCard({
+  children,
+  className = "",
+  intensity = 8,
+}: {
+  children: ReactNode;
+  className?: string;
+  intensity?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 200, damping: 18, mass: 0.4 });
+  const sy = useSpring(y, { stiffness: 200, damping: 18, mass: 0.4 });
+  const rotateX = useTransform(sy, [-0.5, 0.5], [intensity, -intensity]);
+  const rotateY = useTransform(sx, [-0.5, 0.5], [-intensity, intensity]);
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={(e) => {
+        const r = ref.current?.getBoundingClientRect();
+        if (!r) return;
+        x.set((e.clientX - r.left) / r.width - 0.5);
+        y.set((e.clientY - r.top) / r.height - 0.5);
+      }}
+      onMouseLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      style={{ rotateX, rotateY, transformPerspective: 1000 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
