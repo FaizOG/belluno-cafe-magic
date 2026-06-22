@@ -1,0 +1,76 @@
+## Belluno Cafe — Website Plan
+
+A multi-page, motion-rich website for **Belluno** (cafe in Vesu, Surat — @belluno.vesu) inspired by Italian alpine luxury: Verde Alpi marble, antique gold, cream, with a single electric-blue signature accent.
+
+### Pages
+
+```text
+/             Home          — bento grid hero, signature picks, story snippet, hours+map tile
+/menu         Menu          — full menu in categories (coffee, espresso, signature, food, desserts)
+/about        Our Story     — brand story, philosophy, Vesu roots
+/gallery      Gallery       — masonry photo grid of cafe + drinks
+/contact      Visit Us      — address, hours, phone, embedded Google Map (link below)
+/reservations Reserve       — simple booking form (name, date, time, party size, notes)
+```
+
+Google Maps link wired into Contact + home location tile: https://maps.app.goo.gl/QFYGZavcNMqiqM8T6
+
+### Visual System (locked)
+
+- **Palette:** `#233F31` deep verde alpi (primary), `#607164` sage marble, `#F3ECDC` warm cream (surface), `#BB9A64` antique gold (accent), `#4E73F5` electric blue (rare signature mark only)
+- **Type:** DM Serif Display (headings) + Fira Sans (body), loaded via `<link>` in `__root.tsx`
+- **Layout:** Asymmetric bento grid on home; editorial layouts elsewhere
+- **Tokens:** Defined in `src/styles.css` under `@theme` (no hardcoded color classes)
+
+### Animation (maximum intensity)
+
+- Letter-by-letter serif headline reveals on load and scroll
+- Scroll-linked parallax on hero marble texture + image zoom in bento tiles
+- Hover tilts and lifts on tiles, magnetic CTA buttons
+- Page transitions with mask wipes between routes
+- Subtle film-grain + marble veining overlays
+- Implemented with Framer Motion (`motion` package) + native CSS scroll-driven animations
+- Honors `prefers-reduced-motion`
+
+### Routes & Components
+
+```text
+src/routes/
+  __root.tsx          shared nav + footer, font <link>s, page transitions
+  index.tsx           home (bento grid)
+  menu.tsx
+  about.tsx
+  gallery.tsx
+  contact.tsx
+  reservations.tsx
+
+src/components/
+  layout/Nav.tsx, Footer.tsx, PageTransition.tsx
+  motion/RevealText.tsx, TiltCard.tsx, MagneticButton.tsx, MarbleBackdrop.tsx
+  home/HeroBento.tsx, SignatureTile.tsx, StoryTile.tsx, LocationTile.tsx, HoursTile.tsx, GalleryTeaser.tsx
+  menu/MenuSection.tsx, MenuItem.tsx
+  gallery/MasonryGrid.tsx
+  contact/MapEmbed.tsx, InfoCard.tsx
+  reservations/ReservationForm.tsx (client-side validation, success state — no backend)
+```
+
+### Content
+
+- Realistic placeholder copy crafted from Instagram cues (specialty coffee, brunch, cozy alpine vibe in Vesu)
+- AI-generated imagery for hero, ambience, drinks, pastries (Italian cafe / verde alpi marble theme)
+- Menu items as plausible Italian cafe offerings — easy to edit later
+- All "Order"/"Reserve" CTAs functional within site (reservations form shows success toast; no backend)
+
+### Technical notes
+
+- Stack: TanStack Start (existing), Tailwind v4, shadcn, Framer Motion
+- Add deps: `motion` (Framer Motion v11)
+- Per-route `head()` with unique title/description/OG for SEO
+- Single H1 per page, semantic HTML, alt text on all images
+- No backend / Cloud needed — reservations form is a frontend-only demo (can be wired later)
+
+### Out of scope (for now)
+
+- Real reservations backend, payment, online ordering
+- CMS for menu (menu lives in a typed data file `src/data/menu.ts`)
+- Instagram live feed (use static curated images)
